@@ -23,7 +23,10 @@ public class World : MonoBehaviour
 	    
         _tileManager = GetComponent<TileManager>();
         //get gps into settings
-
+        Input.location.Start(10.0f, 10.0f);
+        //record start position
+        //_settings.Lat = Input.location.lastData.latitude;
+        //_settings.Long = Input.location.lastData.longitude;
         //lerp player into that place
         _tileManager.Init(_buildingFactory, _roadFactory, _settings);
 	}
@@ -36,7 +39,7 @@ public class World : MonoBehaviour
         [SerializeField]
         public float Long = -122.1443f;
         [SerializeField]
-        public int Range = 3;
+        public int Range = 1;
         [SerializeField]
         public int DetailLevel = 16;
         [SerializeField]

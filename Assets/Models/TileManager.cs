@@ -32,9 +32,14 @@ namespace Assets
         
         public virtual void Init(BuildingFactory buildingFactory, RoadFactory roadFactory, World.Settings settings)
         {
+            //初始经纬度转mercator
             var v2 = GM.LatLonToMeters(settings.Lat, settings.Long);
+            Debug.Log("v2:");
+            Debug.Log(v2);
+            //经纬度转detail level级别的tile坐标
             var tile = GM.MetersToTile(v2, settings.DetailLevel);
 
+            //tilehost为tile的坐标
             TileHost = new GameObject("Tiles").transform;
             TileHost.SetParent(transform, false);
 
@@ -42,16 +47,21 @@ namespace Assets
             RoadFactory = roadFactory;
             Tiles = new Dictionary<Vector2, Tile>();
             CenterTms = tile;
+            //tile 坐标
             CenterInMercator = GM.TileBounds(CenterTms, Zoom).center;
             Zoom = settings.DetailLevel;
             Range = settings.Range;
             LoadImages = settings.LoadImages;
-
+            Debug.Log("Centertms: ");
+            Debug.Log(CenterTms);
+            Debug.Log("CenterinMercator: ");
+            Debug.Log(CenterInMercator);
             LoadTiles(CenterTms, CenterInMercator);
         }
 
         protected void LoadTiles(Vector2 tms, Vector2 center)
         {
+            Debug.Log(Range);
             for (int i = -Range; i <= Range; i++)
             {
                 for (int j = -Range; j <= Range; j++)
@@ -64,6 +74,7 @@ namespace Assets
             }
         }
 
+        //产生一个tile
         protected virtual IEnumerator CreateTile(Vector2 tileTms, Vector2 centerInMercator)
         {
             var rect = GM.TileBounds(tileTms, Zoom);
@@ -80,7 +91,10 @@ namespace Assets
                       });
             Tiles.Add(tileTms, tile);
             tile.transform.SetParent(TileHost, true);
+            
+            
             tile.transform.position = (rect.center - centerInMercator).ToVector3xz();
+            Debug.Log(tile.transform.position);
             LoadTile(tileTms, tile);
 
             yield return null;
@@ -93,6 +107,7 @@ namespace Assets
                 .Subscribe(
                     tile.ConstructTile, //success
                     exp => Debug.Log("Error fetching -> " + url)); //failure
+            //Debug.Log(url);
         }
     }
 }
