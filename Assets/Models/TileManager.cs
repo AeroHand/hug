@@ -14,6 +14,11 @@ namespace Assets
 {
     public class TileManager : MonoBehaviour
     {
+        //you prefab
+        public GameObject yourself;
+        private Vector3 initposition;
+        
+
         private readonly string _mapzenUrl = "https://vector.mapzen.com/osm/{0}/{1}/{2}/{3}.{4}?api_key={5}";
         private readonly string _key = "vector-tiles-5sBcqh6"; //try getting your own key if this doesn't work
         private readonly string _mapzenLayers = "buildings,roads";
@@ -29,7 +34,7 @@ namespace Assets
         protected Dictionary<Vector2, Tile> Tiles; //will use this later on
         protected Vector2 CenterTms; //tms tile coordinate
         protected Vector2 CenterInMercator; //this is like distance (meters) in mercator 
-        
+
         public virtual void Init(BuildingFactory buildingFactory, RoadFactory roadFactory, World.Settings settings)
         {
             //初始经纬度转mercator
@@ -49,6 +54,10 @@ namespace Assets
             CenterTms = tile;
             //tile 坐标
             CenterInMercator = GM.TileBounds(CenterTms, Zoom).center;
+            initposition = (v2 - CenterInMercator).ToVector3xz();
+            GameManager.Instance.yourselfavatar=Instantiate(yourself, initposition, this.transform.rotation) as GameObject;
+            GameManager.Instance.yourselfavatar.GetComponent<GPSmovemen>().centertiletms = CenterInMercator;
+
             Zoom = settings.DetailLevel;
             Range = settings.Range;
             LoadImages = settings.LoadImages;
@@ -103,6 +112,8 @@ namespace Assets
         private void LoadTile(Vector2 tileTms, Tile tile)
         {
             var url = string.Format(_mapzenUrl, _mapzenLayers, Zoom, tileTms.x, tileTms.y, _mapzenFormat, _key);
+            //Debug.Log(url);
+            
             ObservableWWW.Get(url)
                 .Subscribe(
                     tile.ConstructTile, //success

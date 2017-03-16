@@ -58,7 +58,7 @@ namespace Assets
                 var rend = go.GetComponent<Renderer>();
                 rend.material = Resources.Load<Material>("Ground");
                 rend.material.mainTexture = new Texture2D(512, 512, TextureFormat.DXT5, false);
-                rend.material.color = new Color(.1f, .1f, .1f, 1f);
+                //rend.material.color = new Color(.1f, .1f, .1f, 1f);
 
                 if (_settings.LoadImages)
                 {

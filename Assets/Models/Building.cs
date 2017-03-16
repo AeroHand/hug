@@ -20,7 +20,8 @@ namespace Assets.Models
             LanduseKind = kind;
             _verts = buildingCorners;
             GetComponent<MeshFilter>().mesh = CreateMesh(_verts, settings);
-            GetComponent<MeshRenderer>().material = Resources.Load<Material>(LanduseKind);
+            GetComponent<MeshRenderer>().material = Resources.Load<Material>("Commercial");
+            Debug.Log(LanduseKind);
         }
         
         private static Mesh CreateMesh(List<Vector3> verts, Settings settings)

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class UImanager : MonoBehaviour {
@@ -7,7 +8,9 @@ public class UImanager : MonoBehaviour {
     public GameObject ChatInterface;
     public GameObject FriendsInterface;
     public GameObject ProfileInterface;
-
+    public GameObject Topbar;
+    public Text TopbarText;
+    public GameObject listpanel;
 	// Use this for initialization
 	void Start () {
 	
@@ -23,6 +26,8 @@ public class UImanager : MonoBehaviour {
         ChatInterface.SetActive(false);
         FriendsInterface.SetActive(false);
         ProfileInterface.SetActive(false);
+        Topbar.SetActive(true);
+        TopbarText.text = "Timeline";
     }
 
     public void onExploreBtnClick()
@@ -31,6 +36,7 @@ public class UImanager : MonoBehaviour {
         ChatInterface.SetActive(false);
         FriendsInterface.SetActive(false);
         ProfileInterface.SetActive(false);
+        Topbar.SetActive(false);
     }
 
     public void onChatBtnClick()
@@ -39,6 +45,8 @@ public class UImanager : MonoBehaviour {
         ChatInterface.SetActive(true);
         FriendsInterface.SetActive(false);
         ProfileInterface.SetActive(false);
+        Topbar.SetActive(true);
+        TopbarText.text = "Chat";
     }
 
     public void onFriendsBtnClick()
@@ -47,6 +55,8 @@ public class UImanager : MonoBehaviour {
         ChatInterface.SetActive(false);
         FriendsInterface.SetActive(true);
         ProfileInterface.SetActive(false);
+        Topbar.SetActive(true);
+        TopbarText.text = "Friends";
     }
 
     public void onProfileBtnClick()
@@ -55,5 +65,17 @@ public class UImanager : MonoBehaviour {
         ChatInterface.SetActive(false);
         FriendsInterface.SetActive(false);
         ProfileInterface.SetActive(true);
+        Topbar.SetActive(true);
+        TopbarText.text = "Profile";
+    }
+
+    public void onCloseListBtnClick()
+    {
+        listpanel.SetActive(false);
+    }
+
+    public void onListShow()
+    {
+        listpanel.SetActive(true);
     }
 }
